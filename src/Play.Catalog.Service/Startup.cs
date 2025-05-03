@@ -37,7 +37,18 @@ namespace Play.Catalog.Service
                 .AddMongoRepository<Item>("items")
                 .AddMassTransitWithRabbitMQ()
                 .AddJwtBearerAuthentication();
-                
+
+            services.AddAuthorizationBuilder()
+                .AddPolicy(Policies.Read, policy =>
+                {
+                    policy.RequireRole("Admin");
+                    policy.RequireClaim("scope", "catalog.readaccess", "catalog.fulllaccess");
+                })
+                .AddPolicy(Policies.Write, policy =>
+                {
+                    policy.RequireRole("Admin");
+                    policy.RequireClaim("scope", "catalog.writeaccess", "catalog.fulllaccess");
+                });
 
             services.AddControllers(options =>
             {
@@ -59,7 +70,8 @@ namespace Play.Catalog.Service
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Catalog.Service v1"));
 
-                app.UseCors(builder =>{
+                app.UseCors(builder =>
+                {
                     builder.WithOrigins(Configuration[AllowedOriginSetting])
                         .AllowAnyHeader()
                         .AllowAnyMethod();

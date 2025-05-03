@@ -28,6 +28,7 @@ namespace Play.Catalog.Service.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         public async Task<IEnumerable<ItemDto>> GetAsync()
         {
             var items = (await itemsRepository.GetAllAsync())
@@ -37,6 +38,7 @@ namespace Play.Catalog.Service.Controllers
 
         // GET /items/{id}
         [HttpGet("{id}")]
+        [Authorize(Policies.Read)]
         public async Task<ActionResult<ItemDto>> GetByIdAsync(Guid id)
         {
             var item = await itemsRepository.GetAsync(id);
@@ -51,6 +53,7 @@ namespace Play.Catalog.Service.Controllers
 
         // POST /items
         [HttpPost]
+        [Authorize(Policies.Write)]
         public async Task<ActionResult<ItemDto>> PostAsync(CreateItemDto createItemDto)
         {
             var item = new Item
@@ -70,6 +73,7 @@ namespace Play.Catalog.Service.Controllers
 
         // PUT /items/{id}
         [HttpPut("{id}")]
+        [Authorize(Policies.Read)]
         public async Task<IActionResult> PutAsync(Guid id, UpdateItemDto updateItemDto)
         {
             var existingItem = await itemsRepository.GetAsync(id);
@@ -85,7 +89,7 @@ namespace Play.Catalog.Service.Controllers
 
             await itemsRepository.UpdateAsync(existingItem);
 
-            await publishEndpoint.Publish(new CatalogItemUpdated(existingItem.Id, existingItem.Name, 
+            await publishEndpoint.Publish(new CatalogItemUpdated(existingItem.Id, existingItem.Name,
                 existingItem.Description));
 
             return NoContent();
@@ -93,6 +97,7 @@ namespace Play.Catalog.Service.Controllers
 
         // DELETE /items/{id}
         [HttpDelete("{id}")]
+        [Authorize(Policies.Read)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var item = await itemsRepository.GetAsync(id);
