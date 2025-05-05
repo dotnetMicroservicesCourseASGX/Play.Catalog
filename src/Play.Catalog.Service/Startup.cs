@@ -42,12 +42,12 @@ namespace Play.Catalog.Service
                 .AddPolicy(Policies.Read, policy =>
                 {
                     policy.RequireRole("Admin");
-                    policy.RequireClaim("scope", "catalog.readaccess", "catalog.fulllaccess");
+                    policy.RequireClaim("scope", "catalog.readaccess", "catalog.fullaccess");
                 })
                 .AddPolicy(Policies.Write, policy =>
                 {
                     policy.RequireRole("Admin");
-                    policy.RequireClaim("scope", "catalog.writeaccess", "catalog.fulllaccess");
+                    policy.RequireClaim("scope", "catalog.writeaccess", "catalog.fullaccess");
                 });
 
             services.AddControllers(options =>
