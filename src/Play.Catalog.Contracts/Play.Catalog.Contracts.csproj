@@ -4,6 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageDescription>Contracts library from Catalog for Play Economy services.</PackageDescription>
+    <Authors>Andres Suarez</Authors>
+    <Company>.Net Microservices</Company>
   </PropertyGroup>
 
 </Project>
