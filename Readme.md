@@ -16,7 +16,7 @@ dotnet nuget push ..\packages\Play.Catalog.Contracts.$version.nupkg --api-key $g
 ```powershell
 $env:GH_OWNER="dotnetMicroservicesCourseASGX"
 $env:GH_PAT="[PAT HERE]"
-$appname="playeconomyaxsg"
+$appname="playeconomyaxsg1"
 docker build --secret id=GH_OWNER --secret id=GH_PAT -t "$appname.azurecr.io/play.catalog:$version" .
 ```
 

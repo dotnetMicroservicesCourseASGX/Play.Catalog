@@ -15,6 +15,6 @@ kind: ServiceAccount
 metadata:
   name: catalog-serviceaccount
   annotations:
-    azure.workload.identity/client-id: 3197ba5a-95f7-4a73-942e-184326a7ae5f
+    azure.workload.identity/client-id: 99030de5-71eb-41e5-b1b4-3bd3d753f969
   labels:
     azure.workload.identity/use: "true"
