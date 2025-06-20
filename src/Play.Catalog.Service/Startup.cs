@@ -1,6 +1,3 @@
-using MassTransit;
-using MassTransit.Definition;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
 using Play.Catalog.Service.Entities;
 using Play.Common.HealthChecks;
 using Play.Common.Identity;
@@ -21,7 +17,6 @@ namespace Play.Catalog.Service
     public class Startup
     {
         private const string AllowedOriginSetting = "AllowedOrigin";
-        private ServiceSettings serviceSettings;
 
         public Startup(IConfiguration configuration)
         {
@@ -33,7 +28,7 @@ namespace Play.Catalog.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            serviceSettings = Configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
+            // serviceSettings = Configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
 
             services.AddMongo()
                 .AddMongoRepository<Item>("items")

@@ -1,8 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-deployment
+spec:
+  selector:
+    matchLabels:
+      app: catalog
+  template:
+    metadata:
+      labels:
+        app: catalog
+        azure.workload.identity/use: "true"
+    spec:
+      serviceAccountName: catalog-serviceaccount
+      containers:
+      - name: catalog
+        image: playeconomyaxsg1.azurecr.io/play.catalog:1.0.6
+        env:
+        - name: ServiceSettings__MessageBroker
+          value: SERVICEBUS
+        - name: ServiceSettings__KeyVaultName
+          value: playeconomyaxsg1
+        - name: ServiceSettings__Authority
+          value: https://playeconomyaxsg1.eastus.cloudapp.azure.com/identity-svc
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 5000
+          initialDelaySeconds: 60
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 5000
+          initialDelaySeconds: 60
+
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: catalog-service
 spec:
+  type: ClusterIP
   selector:
     app: catalog
   ports:
@@ -15,6 +59,6 @@ kind: ServiceAccount
 metadata:
   name: catalog-serviceaccount
   annotations:
-    azure.workload.identity/client-id: 99030de5-71eb-41e5-b1b4-3bd3d753f969
+    azure.workload.identity/client-id: f99db96d-799f-4d82-881a-866050ed0932
   labels:
     azure.workload.identity/use: "true"
